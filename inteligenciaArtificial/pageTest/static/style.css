@@ -1,0 +1,112 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #1a1a1a;
+  --border: #e2e2e2;
+  --radius: 8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- Layout: una columna centrada ---- */
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 320px;
+  padding: 24px;
+}
+
+/* Fila 1: titulo */
+.row-title h1 {
+  font-size: 28px;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+/* Fila 2: espacio para imagen */
+.avatar-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fila 3: inputs de los 3 numeros */
+.row-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.row-field label {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.inputs-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.inputs-row input {
+  font-size: 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  width: 100%;
+  min-width: 0;
+  background: var(--bg);
+  transition: border-color 0.2s;
+}
+
+.inputs-row input:focus { border-color: var(--fg); }
+
+.error {
+  font-size: 13px;
+  color: #c0392b;
+}
+
+/* Fila 4: boton, el padding cubre solo el boton */
+.row-button button {
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 32px;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.row-button button:hover { opacity: 0.85; }
+
+/* Fila 5: resultado (anio de nacimiento) */
+.row-result p {
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.row-result strong { color: var(--fg); }
+
+.form { display: contents; }

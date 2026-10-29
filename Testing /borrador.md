@@ -1,0 +1,5 @@
+Más allá de las operaciones básicas con los datos (CRUD), la seguridad en bases de datos exige gestionar autorizaciones sobre otros recursos y procesos críticos para garantizar la integridad, disponibilidad y confiabilidad del sistema  Entre estos destacan:
+
+Gestión de Índices: Se debe controlar quién tiene permiso para crear o modificar índices, ya que son fundamentales para mejorar la velocidad y eficiencia de las operaciones, pero pueden afectar el rendimiento si no se administran bien 
+Procedimientos de Mantenimiento: Es crucial restringir el acceso a procesos administrativos como la ejecución de backups (copias de seguridad), tareas de recuperación ante fallos y configuraciones de redundancia
+Seguridad de los Objetos: Además de las tablas, se deben proteger otros objetos internos de la base de datos que interactúan en la gestión diaria para evitar alteraciones o eliminaciones no autorizadas

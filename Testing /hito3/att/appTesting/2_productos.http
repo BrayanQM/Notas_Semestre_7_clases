@@ -1,0 +1,176 @@
+### Variables
+@baseUrl = http://localhost:5000
+@contentType = application/json
+@correo = {{$processEnv API_EMAIL}}
+@contrasena = {{$processEnv API_PASSWORD}}
+
+### Iniciar sesión (configura API_EMAIL y API_PASSWORD en el entorno)
+POST {{baseUrl}}/api/sesion
+Content-Type: {{contentType}}
+
+{
+    "correo": "{{correo}}",
+    "contrasena": "{{contrasena}}"
+}
+
+### ============================================
+### 01 - Listar todos los productos
+### ============================================
+GET {{baseUrl}}/api/productos
+Accept: {{contentType}}
+
+### ============================================
+### 02 - Obtener un producto por ID
+### ============================================
+# @name obtenerProducto
+GET {{baseUrl}}/api/productos/1
+Accept: {{contentType}}
+
+### ============================================
+### 03 - Crear producto válido
+### ============================================
+# @name crearProducto
+POST {{baseUrl}}/api/productos
+Content-Type: {{contentType}}
+
+{
+    "nombre": "Laptop HP",
+    "descripcion": "Laptop 15 pulgadas, 16GB RAM",
+    "precio": 1500.50,
+    "precio_por_unidad": 1500.50,
+    "cantidad_stock": 25,
+    "unidad_medida": "unidad",
+    "fecha_vencimiento": "2026-12-31"
+}
+
+### ============================================
+### 04 - Crear producto con precio negativo (400)
+### ============================================
+POST {{baseUrl}}/api/productos
+Content-Type: {{contentType}}
+
+{
+    "nombre": "Producto Inválido",
+    "descripcion": "Precio negativo",
+    "precio": -100,
+    "precio_por_unidad": -100,
+    "cantidad_stock": 10,
+    "unidad_medida": "unidad",
+    "fecha_vencimiento": "2026-12-31"
+}
+
+### ============================================
+### 05 - Crear producto con fecha pasada (400)
+### ============================================
+POST {{baseUrl}}/api/productos
+Content-Type: {{contentType}}
+
+{
+    "nombre": "Producto Vencido",
+    "descripcion": "Fecha en el pasado",
+    "precio": 100,
+    "precio_por_unidad": 100,
+    "cantidad_stock": 10,
+    "unidad_medida": "unidad",
+    "fecha_vencimiento": "2020-01-01"
+}
+
+### ============================================
+### 06 - Crear producto con nombre vacío (400)
+### ============================================
+POST {{baseUrl}}/api/productos
+Content-Type: {{contentType}}
+
+{
+    "nombre": "",
+    "descripcion": "Sin nombre",
+    "precio": 100,
+    "precio_por_unidad": 100,
+    "cantidad_stock": 10,
+    "unidad_medida": "unidad",
+    "fecha_vencimiento": "2026-12-31"
+}
+
+### ============================================
+### 07 - Actualizar producto (PUT)
+### ============================================
+PUT {{baseUrl}}/api/productos/1
+Content-Type: {{contentType}}
+
+{
+    "nombre": "Laptop HP Actualizada",
+    "descripcion": "Ahora con 32GB RAM",
+    "precio": 1800.00,
+    "precio_por_unidad": 1800.00,
+    "cantidad_stock": 25,
+    "unidad_medida": "unidad",
+    "fecha_vencimiento": "2027-06-30"
+}
+
+### ============================================
+### 08 - Obtener producto inexistente (404)
+### ============================================
+GET {{baseUrl}}/api/productos/999999
+Accept: {{contentType}}
+
+### ============================================
+### 09 - Eliminar producto (DELETE)
+### ============================================
+DELETE {{baseUrl}}/api/productos/1
+Accept: {{contentType}}
+
+### ============================================
+### 10 - Listar productos después de eliminar
+### ============================================
+GET {{baseUrl}}/api/productos
+Accept: {{contentType}}
+
+### ============================
+### 11 - Crear producto y guardar id
+### ============================
+# @name crearProd
+POST {{baseUrl}}/api/productos
+Content-Type: {{contentType}}
+
+{
+    "nombre": "tomate rojito",
+    "descripcion": "podrido, que no lo note el usuario",
+    "precio": 5,
+    "precio_por_unidad": 5,
+    "cantidad_stock": 30,
+    "unidad_medida": "unidad",
+    "fecha_vencimiento": "2026-12-31"
+}
+
+### Usar el id devuelto en el request anterior
+GET {{baseUrl}}/api/productos/{{crearProd.response.body.$.id}}
+Accept: {{contentType}}
+
+### Registrar comprador para la venta
+# @name crearComprador
+POST {{baseUrl}}/api/compradores
+Content-Type: {{contentType}}
+
+{
+    "nombre": "Ana",
+    "apellido": "Lopez",
+    "telefono": "70000000"
+}
+
+### Buscar comprador por nombre, apellido o teléfono
+GET {{baseUrl}}/api/compradores?buscar=Ana
+Accept: {{contentType}}
+
+### Registrar venta parcial del producto recién creado
+POST {{baseUrl}}/api/ventas
+Content-Type: {{contentType}}
+
+{
+    "producto_id": {{crearProd.response.body.$.id}},
+    "comprador_id": {{crearComprador.response.body.$.id}},
+    "cantidad": 1.5
+}
+
+### Consultar historial de ventas del usuario autenticado
+GET {{baseUrl}}/api/ventas
+Accept: {{contentType}}

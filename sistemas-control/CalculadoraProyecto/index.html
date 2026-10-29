@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaplaceCalc - Calculadora de Transformadas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjs@12.4.1/lib/browser/math.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/algebrite@1.4.0/dist/algebrite.bundle-for-browser.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark">L</div>
+        <div class="brand-text">
+          <h1>LaplaceCalc</h1>
+          <span>Transformadas de Laplace</span>
+        </div>
+      </div>
+      <nav class="top-nav">
+        <button class="nav-btn active" data-view="calculator">Calculadora</button>
+        <button class="nav-btn" data-view="formulas">Formulas</button>
+        <button class="nav-btn" data-view="examples">Ejemplos</button>
+        <button class="nav-btn" data-view="history">Historial</button>
+      </nav>
+      <button class="theme-btn" id="themeBtn" title="Cambiar tema">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </header>
+
+    <main class="app-main">
+      <section class="view active" id="view-calculator">
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="modeLaplace" data-mode="laplace">
+            <span class="mode-icon">L</span>
+            <span class="mode-label">Transformada<br><small>F(t) &rarr; F(s)</small></span>
+          </button>
+          <button class="mode-btn" id="modeInverse" data-mode="inverse">
+            <span class="mode-icon">L<sup>-1</sup></span>
+            <span class="mode-label">Antitransformada<br><small>F(s) &rarr; f(t)</small></span>
+          </button>
+        </div>
+
+        <div class="calc-panel">
+          <div class="input-section">
+            <label class="field-label" id="fieldLabel">Funcion en el tiempo F(t)</label>
+            <div class="input-row">
+              <input type="text" id="exprInput" class="expr-input" placeholder="Ej: sin(2*t), e^(-2*t), t^2..." spellcheck="false" autocomplete="off">
+              <button class="calc-go" id="calcBtn">Resolver</button>
+            </div>
+            <div class="symbol-bar">
+              <button data-sym="t">t</button>
+              <button data-sym="s">s</button>
+              <button data-sym="^2">x&sup2;</button>
+              <button data-sym="exp(">e^()</button>
+              <button data-sym="sin(">sin()</button>
+              <button data-sym="cos(">cos()</button>
+              <button data-sym="sinh(">sinh()</button>
+              <button data-sym="cosh(">cosh()</button>
+              <button data-sym="sqrt(">sqrt()</button>
+              <button data-sym="/">/</button>
+              <button data-sym="(">(</button>
+              <button data-sym=")">)</button>
+            </div>
+            <div class="preview-area">
+              <span class="preview-tag">Vista previa</span>
+              <div id="previewBox" class="preview-box"></div>
+            </div>
+          </div>
+
+          <div class="quick-picks">
+            <span class="qp-label">Ejemplos rapidos:</span>
+            <button class="qp" data-type="laplace" data-expr="e^(-2*t)">e^(-2t)</button>
+            <button class="qp" data-type="inverse" data-expr="1/(s^2+4)">1/(s&sup2;+4)</button>
+            <button class="qp" data-type="laplace" data-expr="e^(a*t)">e^(at)</button>
+            <button class="qp" data-type="laplace" data-expr="t^2">t&sup2;</button>
+            <button class="qp" data-type="laplace" data-expr="sin(3*t)">sin(3t)</button>
+            <button class="qp" data-type="laplace" data-expr="cos(4*t)">cos(4t)</button>
+            <button class="qp" data-type="inverse" data-expr="(2*s+3)/((s+1)*(s+2))">(2s+3)/((s+1)(s+2))</button>
+            <button class="qp" data-type="inverse" data-expr="(2*s+3)/(s^2+4*s+13)">s&sup2;+4s+13</button>
+            <button class="qp" data-type="laplace" data-expr="t*sin(2*t)">t*sin(2t)</button>
+          </div>
+        </div>
+
+        <div class="error-banner" id="errorBanner">
+          <span class="err-icon">!</span>
+          <span id="errorText"></span>
+        </div>
+
+        <div class="loader" id="loader">
+          <div class="loader-bar"><div class="loader-fill"></div></div>
+          <span>Analizando expresion...</span>
+        </div>
+
+        <div class="results-area" id="resultsArea">
+          <div class="result-hero" id="resultHero">
+            <div class="result-badge">Resultado</div>
+            <div id="finalFormula" class="final-formula"></div>
+            <button class="copy-btn" id="copyBtn">Copiar resultado</button>
+            <span class="copy-toast" id="copyToast">Copiado!</span>
+          </div>
+
+          <div class="steps-panel" id="stepsPanel">
+            <h3 class="section-title">Desarrollo paso a paso</h3>
+            <div id="stepsList"></div>
+          </div>
+
+          <div class="graph-panel">
+            <div class="graph-header">
+              <h3 class="section-title">Grafica de la funcion</h3>
+              <div class="graph-controls">
+                <label>t min: <input type="number" id="tMinVal" value="0" step="0.5"></label>
+                <label>t max: <input type="number" id="tMaxVal" value="10" step="1"></label>
+              </div>
+            </div>
+            <div class="graph-wrap"><canvas id="plotCanvas"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-formulas">
+        <div class="card">
+          <h2 class="section-title">Tabla de Transformadas de Laplace</h2>
+          <div class="formulas-controls">
+            <input type="text" id="formulaSearch" class="formula-search" placeholder="Buscar funcion o propiedad...">
+            <div class="cat-chips">
+              <button class="chip active" data-cat="todas">Todas</button>
+              <button class="chip" data-cat="basicas">Basicas</button>
+              <button class="chip" data-cat="trig">Trigonometricas</button>
+              <button class="chip" data-cat="hiper">Hiperbolicas</button>
+              <button class="chip" data-cat="propiedades">Propiedades</button>
+            </div>
+          </div>
+          <div class="formulas-table-wrap">
+            <table class="formulas-table">
+              <thead>
+                <tr><th>f(t)</th><th>F(s)</th><th>Propiedad</th><th>Ejemplo</th><th></th></tr>
+              </thead>
+              <tbody id="formulasBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-examples">
+        <div class="card">
+          <h2 class="section-title">Ejemplos guiados</h2>
+          <p class="section-sub">Ejercicios del PDF de la materia para verificar el motor de calculo.</p>
+        </div>
+        <div class="examples-grid" id="examplesGrid"></div>
+      </section>
+
+      <section class="view" id="view-history">
+        <div class="card">
+          <div class="history-head">
+            <h2 class="section-title">Historial de calculos</h2>
+            <button class="clear-hist-btn" id="clearHistBtn">Limpiar historial</button>
+          </div>
+          <div id="historyList" class="history-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>LaplaceCalc &mdash; Calculadora de Transformadas de Laplace</span>
+      <span>KaTeX &middot; Math.js &middot; Chart.js</span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

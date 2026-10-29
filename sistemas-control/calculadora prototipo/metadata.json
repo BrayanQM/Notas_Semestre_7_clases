@@ -1,0 +1,6 @@
+{
+  "name": "Laplace Master",
+  "description": "Calculadora simbólica de Transformadas y Antitransformadas de Laplace con paso a paso y gráficas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

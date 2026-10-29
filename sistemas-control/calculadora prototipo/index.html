@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> LAPLACE MASTER — Calculadora Simbólica de Transformadas de Laplace</title>
+  <meta name="description" content="Calculadora simbólica avanzada de Transformadas de Laplace y Transformadas Inversas con pasos detallados, KaTeX y gráficas interactivas.">
+  <meta property="og:title" content="⚡ LAPLACE MASTER — Calculadora Simbólica de Transformadas de Laplace">
+  <meta property="og:description" content="Calculadora simbólica avanzada de Transformadas de Laplace y Transformadas Inversas con pasos detallados, KaTeX y gráficas interactivas.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- KaTeX CSS & JS for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+
+  <!-- Math.js for Symbolic Operations -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjs@12.4.1/lib/browser/math.js"></script>
+
+  <!-- Algebrite for Computer Algebra System -->
+  <script src="https://cdn.jsdelivr.net/npm/algebrite@1.4.0/dist/algebrite.bundle-for-browser.js"></script>
+
+  <!-- Chart.js for Responsive Scientific Graphing -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+  <!-- Hoja de estilos del proyecto -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- SIDEBAR DE NAVEGACIÓN -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-icon">⚡</div>
+        <div class="sidebar-brand-text">
+          <h1>LAPLACE MASTER</h1>
+          <p>Cálculo Simbólico</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-item active" id="nav-calculator" onclick="switchView('calculator')">
+          <span class="nav-icon">🧮</span>
+          <span>Calculadora</span>
+        </a>
+        <a class="nav-item" id="nav-formulas" onclick="switchView('formulas')">
+          <span class="nav-icon">📚</span>
+          <span>Tabla de Fórmulas</span>
+        </a>
+        <a class="nav-item" id="nav-examples" onclick="switchView('examples')">
+          <span class="nav-icon">💡</span>
+          <span>Ejemplos Guiados</span>
+        </a>
+        <a class="nav-item" id="nav-history" onclick="switchView('history')">
+          <span class="nav-icon">🕘</span>
+          <span>Historial</span>
+          <span class="nav-badge" id="historyCountBadge">0</span>
+        </a>
+        <a class="nav-item" id="nav-settings" onclick="switchView('settings')">
+          <span class="nav-icon">⚙️</span>
+          <span>Configuración</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">
+          <span id="themeToggleIcon">☀️</span>
+          <span id="themeToggleText">Modo claro</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- WRAPPER PRINCIPAL -->
+    <div class="main-wrapper">
+      
+      <!-- HEADER SUPERIOR -->
+      <header class="top-header">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Abrir menú">☰</button>
+          <div class="header-title-box">
+            <h2>⚡ LAPLACE MASTER</h2>
+            <p>Calculadora simbólica de Transformadas de Laplace</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <span class="chip-tag">Sistema Simbólico ES6</span>
+        </div>
+      </header>
+
+      <!-- CUERPO DE CONTENIDO -->
+      <main class="content-body">
+
+        <!-- ========================================== -->
+        <!-- VISTA 1: CALCULADORA PRINCIPAL            -->
+        <!-- ========================================== -->
+        <section class="view-section active" id="view-calculator">
+          
+          <!-- Banner Hero -->
+          <div class="hero-banner">
+            <h3>Calculadora Simbólica de Transformadas</h3>
+            <p>
+              Resuelve transformadas directas ℒ{F(t)} y antitransformadas ℒ⁻¹{F(s)} mediante análisis algebraico real, descomposición en fracciones parciales (Heaviside), completación de cuadrados y teoremas de traslación.
+            </p>
+          </div>
+
+          <!-- Selector de Modo: Directa vs Inversa -->
+          <div class="mode-switch-container">
+            <div class="mode-tab-card active" id="tabLaplace" onclick="switchMode('laplace')">
+              <div class="mode-tab-icon">📐</div>
+              <div class="mode-tab-info">
+                <h4>TRANSFORMADA DE LAPLACE</h4>
+                <p>F(t) ➔ F(s)</p>
+              </div>
+            </div>
+
+            <div class="mode-tab-card" id="tabInverse" onclick="switchMode('inverse')">
+              <div class="mode-tab-icon">🔄</div>
+              <div class="mode-tab-info">
+                <h4>ANTITRANSFORMADA</h4>
+                <p>F(s) ➔ F(t)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Entrada de la Calculadora -->
+          <div class="calc-card">
+            <div class="calc-header">
+              <div class="calc-title">
+                <h3 id="calcInputLabel">Función en el tiempo F(t)</h3>
+                <span id="calcModeIndicator">Modo Simbólico Activo</span>
+              </div>
+            </div>
+
+            <!-- Campo de Entrada -->
+            <div class="input-wrapper">
+              <div class="input-label-row">
+                <label for="mathExpressionInput">Expresión matemática:</label>
+                <span class="input-examples-hint">Soporta sin, cos, exp, e^(-2t), t^n, fracciones...</span>
+              </div>
+
+              <div class="math-input-container">
+                <input 
+                  type="text" 
+                  id="mathExpressionInput" 
+                  class="math-input" 
+                  placeholder="Ejemplos: sin(2*t), e^(-2*t), t^2, exp(2*t)*sin(3*t)..."
+                  value="e^(-2*t)"
+                  autocomplete="off"
+                  spellcheck="false"
+                >
+              </div>
+
+              <!-- Barra de inserción de símbolos rápidos -->
+              <div class="math-symbols-bar">
+                <span>Insertar:</span>
+                <button class="symbol-btn" onclick="insertSymbol('t')">t</button>
+                <button class="symbol-btn" onclick="insertSymbol('s')">s</button>
+                <button class="symbol-btn" onclick="insertSymbol('^2')">x²</button>
+                <button class="symbol-btn" onclick="insertSymbol('^')">^</button>
+                <button class="symbol-btn" onclick="insertSymbol('exp(')">e^(...)</button>
+                <button class="symbol-btn" onclick="insertSymbol('sin(')">sin(...)</button>
+                <button class="symbol-btn" onclick="insertSymbol('cos(')">cos(...)</button>
+                <button class="symbol-btn" onclick="insertSymbol('sinh(')">sinh(...)</button>
+                <button class="symbol-btn" onclick="insertSymbol('cosh(')">cosh(...)</button>
+                <button class="symbol-btn" onclick="insertSymbol('sqrt(')">sqrt(...)</button>
+                <button class="symbol-btn" onclick="insertSymbol('pi')">π</button>
+                <button class="symbol-btn" onclick="insertSymbol('(')">(</button>
+                <button class="symbol-btn" onclick="insertSymbol(')')">)</button>
+                <button class="symbol-btn" onclick="insertSymbol('/')">/</button>
+              </div>
+
+              <!-- Vista previa renderizada con KaTeX -->
+              <div class="preview-box">
+                <span class="preview-label">Vista Previa:</span>
+                <div class="preview-render" id="inputPreviewRender"></div>
+              </div>
+            </div>
+
+            <!-- Fila de Botones de Acción -->
+            <div class="action-buttons-row">
+              <button class="btn-primary" id="calculateBtn" onclick="executeCalculation()">
+                <span>⚡</span>
+                <span id="calcButtonText">CALCULAR TRANSFORMADA</span>
+              </button>
+
+              <button class="btn-secondary" onclick="clearCalculator()">
+                <span>🗑️</span>
+                <span>LIMPIAR</span>
+              </button>
+
+              <button class="btn-outline-copy" onclick="copyResultToClipboard()">
+                <span>📋</span>
+                <span>COPIAR RESULTADO</span>
+              </button>
+            </div>
+
+            <!-- Ejemplos Rápidos en Pills -->
+            <div class="quick-examples-box">
+              <div class="quick-examples-title">Ejemplos Rápidos Disponibles:</div>
+              <div class="examples-pills-row">
+                <button class="example-pill" onclick="loadPredefinedExample('laplace', 'e^(-2*t)')">e^(-2*t)</button>
+                <button class="example-pill" onclick="loadPredefinedExample('inverse', '1/(s^2+4)')">1/(s²+4)</button>
+                <button class="example-pill" onclick="loadPredefinedExample('laplace', 'e^(a*t)')">e^(a*t)</button>
+                <button class="example-pill" onclick="loadPredefinedExample('laplace', 't^2')">t²</button>
+                <button class="example-pill" onclick="loadPredefinedExample('laplace', 'sin(3*t)')">sin(3*t)</button>
+                <button class="example-pill" onclick="loadPredefinedExample('laplace', 'cos(4*t)')">cos(4*t)</button>
+                <button class="example-pill" onclick="loadPredefinedExample('inverse', '(2*s+3)/((s+1)*(s+2))')">(2s+3)/((s+1)(s+2))</button>
+                <button class="example-pill" onclick="loadPredefinedExample('inverse', '(2*s+3)/(s^2+4*s+13)')">s²+4s+13 (Cuadrados)</button>
+                <button class="example-pill" onclick="loadPredefinedExample('laplace', 't*sin(2*t)')">t*sin(2*t)</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Animación de Progreso de Análisis (Requisito 27) -->
+          <div class="analysis-progress-card" id="analysisProgressCard">
+            <div class="progress-header">
+              <div class="spinner"></div>
+              <strong>Analizando expresión y resolviendo simbólicamente...</strong>
+            </div>
+            <div class="progress-steps-list">
+              <div class="progress-step-item" id="progStep1">
+                <div class="step-bullet">✓</div>
+                <span>Expresión válida y normalizada</span>
+              </div>
+              <div class="progress-step-item" id="progStep2">
+                <div class="step-bullet">✓</div>
+                <span>Método matemático y propiedades identificadas</span>
+              </div>
+              <div class="progress-step-item" id="progStep3">
+                <div class="step-bullet">✓</div>
+                <span>Resolución y simplificación completada</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Error -->
+          <div class="error-card" id="errorCard">
+            <div class="error-icon">⚠️</div>
+            <div class="error-content">
+              <h4>No se pudo interpretar la expresión</h4>
+              <p id="errorMessageText">Verifica que hayas escrito correctamente los paréntesis y operadores.</p>
+            </div>
+          </div>
+
+          <!-- CONTENEDOR DE RESULTADOS COMPLETOS -->
+          <div class="result-container" id="resultContainer">
+            
+            <!-- TARJETA DE RESULTADO FINAL -->
+            <div class="final-result-card">
+              <div class="final-result-badge">✓ Resultado Obtenido</div>
+              <div class="final-result-formula" id="finalFormulaRender"></div>
+              
+              <div class="final-result-actions">
+                <button class="btn-outline-copy" onclick="copyResultToClipboard()">
+                  <span>📋</span>
+                  <span>Copiar Expresión</span>
+                </button>
+                <span class="toast-copied" id="copyToast">✓ Resultado copiado al portapapeles</span>
+              </div>
+            </div>
+
+            <!-- SECCIÓN DESARROLLO PASO A PASO -->
+            <div class="steps-breakdown-card">
+              <div class="steps-breakdown-header">
+                <h3><span>🧠</span> DESARROLLO PASO A PASO</h3>
+                <span style="font-size: 0.85rem; color: var(--text-dim);">Resolución Simbólica Detallada</span>
+              </div>
+
+              <!-- Lista de pasos generados dinámicamente -->
+              <div id="stepsContainer"></div>
+            </div>
+
+            <!-- GRÁFICA INTERACTIVA DE LA FUNCIÓN TEMPORAL -->
+            <div class="chart-card">
+              <div class="chart-header">
+                <div class="chart-title">
+                  <h3>📈 Comportamiento Temporal F(t)</h3>
+                  <p>Gráfica de respuesta continua generada con Chart.js</p>
+                </div>
+
+                <div class="chart-controls-row">
+                  <div class="chart-ctrl-group">
+                    <label for="graphTMin">t min:</label>
+                    <input type="number" id="graphTMin" value="0" step="0.5">
+                  </div>
+                  <div class="chart-ctrl-group">
+                    <label for="graphTMax">t max:</label>
+                    <input type="number" id="graphTMax" value="10" step="1">
+                  </div>
+                </div>
+              </div>
+
+              <div class="chart-canvas-wrapper">
+                <canvas id="laplaceChart"></canvas>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 2: TABLA DE FÓRMULAS EDUCATIVA       -->
+        <!-- ========================================== -->
+        <section class="view-section" id="view-formulas">
+          <div class="formulas-card">
+            <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 8px;">📚 Tabla Integral de Transformadas de Laplace</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+              Catálogo de referencia de las funciones elementales, propiedades y teoremas principales.
+            </p>
+
+            <div class="formulas-toolbar">
+              <div class="search-input-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="formulaSearchInput" class="search-input" placeholder="Buscar función, propiedad o ejemplo...">
+              </div>
+
+              <div class="category-filter-chips">
+                <button class="filter-chip active" data-cat="todas">Todas</button>
+                <button class="filter-chip" data-cat="basicas">Básicas</button>
+                <button class="filter-chip" data-cat="polinomios">Polinomios</button>
+                <button class="filter-chip" data-cat="trig">Trigonométricas</button>
+                <button class="filter-chip" data-cat="hiper">Hiperbólicas</button>
+                <button class="filter-chip" data-cat="propiedades">Propiedades y Teoremas</button>
+              </div>
+            </div>
+
+            <div class="formulas-table-container">
+              <table class="formulas-table">
+                <thead>
+                  <tr>
+                    <th>Función f(t)</th>
+                    <th>Transformada F(s)</th>
+                    <th>Propiedad / Nombre</th>
+                    <th>Ejemplo Práctico</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="formulasTableBody">
+                  <!-- Se llena dinámicamente con JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 3: EJEMPLOS GUIADOS                  -->
+        <!-- ========================================== -->
+        <section class="view-section" id="view-examples">
+          <div style="margin-bottom: 24px;">
+            <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 8px;">💡 Galería de Ejercicios y Pruebas Guiadas</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">
+              Ejercicios seleccionados para verificar todas las propiedades y métodos del motor simbólico.
+            </p>
+          </div>
+
+          <div class="examples-grid" id="examplesGalleryContainer">
+            <!-- Se llena dinámicamente con JavaScript -->
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 4: HISTORIAL DE CÁLCULOS             -->
+        <!-- ========================================== -->
+        <section class="view-section" id="view-history">
+          <div class="history-card">
+            <div class="history-header-row">
+              <div>
+                <h3 style="font-size: 1.35rem; font-weight: 800;">🕘 Historial de Cálculos</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Tus operaciones guardadas localmente en el navegador.</p>
+              </div>
+
+              <button class="btn-secondary" onclick="clearAllHistory()">
+                <span>🗑️</span>
+                <span>Limpiar Historial</span>
+              </button>
+            </div>
+
+            <div class="history-list" id="historyList">
+              <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VISTA 5: CONFIGURACIÓN                     -->
+        <!-- ========================================== -->
+        <section class="view-section" id="view-settings">
+          <div class="settings-card">
+            <h3 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 6px;">⚙️ Configuración y Preferencias</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 24px;">Ajusta el comportamiento visual y numérico de Laplace Master.</p>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Tema de la Interfaz</h4>
+                <p>Alternar entre modo oscuro y modo claro para alto contraste de lectura.</p>
+              </div>
+              <div class="setting-ctrl">
+                <button class="btn-secondary" onclick="toggleTheme()">Cambiar Tema</button>
+              </div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Motor de Cálculo Simbólico</h4>
+                <p>Bibliotecas en ejecución: Math.js 12.4, Algebrite 1.4, KaTeX 0.16, Chart.js 4.4.</p>
+              </div>
+              <div class="setting-ctrl">
+                <span class="chip-tag" style="background: var(--accent-emerald-light); color: var(--accent-emerald);">Operativo</span>
+              </div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <h4>Almacenamiento Local</h4>
+                <p>Gestión de memoria caché y preferencias almacenadas en localStorage.</p>
+              </div>
+              <div class="setting-ctrl">
+                <button class="btn-secondary" onclick="clearAllHistory()">Borrar Historial</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="app-footer">
+        <div>
+          <strong>⚡ LAPLACE MASTER</strong> — Calculadora Simbólica de Transformada de Laplace para Ingeniería.
+        </div>
+        <div>
+          Cálculo Simbólico en el Navegador • KaTeX • Math.js • Chart.js
+        </div>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <!-- Script principal del proyecto -->
+  <script src="./script.js"></script>
+</body>
+</html>

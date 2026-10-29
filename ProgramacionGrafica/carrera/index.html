@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrera de Caballos</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game">
+  <div id="hud">
+    <span id="balance">💰 $1000</span>
+    <span id="status">&nbsp;</span>
+  </div>
+
+  <canvas id="track"></canvas>
+
+  <div id="ui">
+    <div id="betpanel" class="panel">
+      <h1>CARRERA DE CABALLOS</h1>
+      <div class="horse-pick" id="picker"></div>
+      <div class="bet-row">
+        Apuesta: <input type="number" id="betAmount" value="100" min="10" max="100000" step="10">
+        <button class="btn" id="startBtn">CORRER</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="racestatus"></div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

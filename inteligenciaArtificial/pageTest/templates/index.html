@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unifranz</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="column">
+    <div class="row-title">
+      <h1>UNIFRANZ</h1>
+    </div>
+
+    <div class="row-avatar">
+      <div class="avatar-placeholder" aria-label="Imagen"></div>
+    </div>
+
+    <form method="post" action="/enviar" class="form">
+      <div class="row-field">
+        <label>Ingresa 3 números</label>
+        <div class="inputs-row">
+          <input type="number" name="num1" value="{{ num1 or '' }}" placeholder="Nº 1" required>
+          <input type="number" name="num2" value="{{ num2 or '' }}" placeholder="Nº 2" required>
+          <input type="number" name="num3" value="{{ num3 or '' }}" placeholder="Nº 3" required>
+        </div>
+      </div>
+
+      <div class="row-button">
+        <button type="submit">Enviar</button>
+      </div>
+    </form>
+
+    <div class="row-result">
+      {% if result %}
+        <p>El número mayor es: <strong>{{ result }}</strong></p>
+      {% endif %}
+    </div>
+  </main>
+</body>
+</html>

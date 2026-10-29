@@ -1,0 +1,361 @@
+Unidad 4
+Automatización
+¿Vale la pena hacerlo?
+Ing. Nelson Cristhian Uruchi Quispe
+
+Repaso de la anterior clase
+
+• Cima (POCAS): Pruebas UI / E2E.
+
+Lentas, frágiles y caras de mantener.
+• Centro (ALGUNAS): Pruebas de
+
+API/Integración. Medianamente
+rápidas.
+• Base (MUCHAS): Pruebas Unitarias.
+
+Rápidas, baratas, ejecutadas por Devs.
+
+Automatización de pruebas
+
+Imagina esto…
+• Tenemos 1000 pruebas que ejecutar:
+• ¿Quién debería ejecutarlas?
+
+• ¿Por qué?
+
+Sigamos pensando…
+• ¿Debemos automatizar TODAS las pruebas?
+
+• ¿Por qué?
+
+¿Qué es automatizar una prueba?
+• Uso
+
+de software para ejecutar pruebas, comparar
+
+resultados
+
+esperados
+
+vs.
+
+reales
+
+y
+
+reportar
+
+sin
+
+intervención manual.
+• El objetivo no es "ejecutar más", es ejecutar lo repetitivo
+
+de forma confiable y sostenible.
+
+Pasos de una prueba
+• En una prueba manual:
+
+• En una prueba automatizada:
+
+• Persona
+
+• Software
+
+• Preparar datos
+
+• Preparar datos
+
+↓
+Ejecutar pasos
+↓
+Observar resultado
+↓
+Comparar resultado
+esperado
+↓
+Registrar resultado
+
+↓
+Ejecutar pasos
+↓
+Observar resultado
+↓
+Comparar resultado
+esperado
+↓
+Registrar resultado
+
+Qué NO es automatizar
+• ❌ Grabar clics.
+• ❌ Hacer que una máquina "pruebe todo".
+
+• ❌ Eliminar completamente al tester.
+• ❌ Convertir cualquier prueba manual en un script.
+• Automatizar es una decisión de ingeniería.
+
+Automatización vs. pruebas manuales
+Aspecto
+
+Manual
+
+Automatizado
+
+Ejecución
+
+Lenta
+
+Rápida
+
+Costo inicial
+
+Bajo
+
+Alto
+
+Costo
+mantenimiento
+
+Bajo
+
+Alto
+
+Detección de bugs
+nuevos
+
+Excelente
+
+Pobre
+
+Regresión
+
+Tediosa
+
+Ideal
+
+Pruebas
+exploratorias
+
+Ideal
+
+Inviable
+
+No compiten, se complementan.
+
+Entonces…¿Por qué automatizamos?
+• Repetición
+• Una prueba que ejecutamos muchas veces puede ser
+
+una buena candidata.
+• Regresión
+• Permite volver a ejecutar pruebas después de cambios.
+• Velocidad
+• Una máquina puede ejecutar muchas comprobaciones
+rápidamente.
+• Repetibilidad
+• El mismo procedimiento puede ejecutarse de forma
+consistente.
+
+Ejemplo 1
+• Caso de prueba: "Verificar que un usuario puede
+
+iniciar sesión correctamente."
+• Se ejecuta:
+• 1 vez
+
+• No parece un problema.
+• 10 veces
+• Todavía manejable.
+
+• 100 veces
+• Empieza a ser tedioso.
+• 1.000 veces
+
+• Aquí comienza a tener sentido automatizar
+
+¿Cuánto tarda una prueba manual?
+• Caso de prueba: "Verificar que un usuario puede iniciar
+
+sesión correctamente."
+• Prueba manual
+
+• Llenar el formulario: 2
+
+minutos
+• Frecuencia: 200
+
+ejecuciones
+• Tiempo total:
+• 2 × 200 = 400 minutos
+
+≈ 6 h 40 min
+
+Pero automatizar también cuesta
+Costos iniciales
+• Tiempo del QA.
+• Diseño del test.
+• Programación.
+• Configuración.
+• Datos de prueba.
+• Aprendizaje de herramientas.
+• Y después...
+• MANTENIMIENTO
+
+El enemigo silencioso
+• El Dev cambia:
+• INGRESAR
+• Por:
+• INICIAR SESIÓN
+• El test falla.
+• ¿Falló la aplicación?
+• NO
+
+NECESARIAMENTE.
+• Entonces:
+• ERROR EN EL TEST
+AUTOMATIZADO
+
+Automatización como inversión
+• INVERSIÓN
+• Tiempo + desarrollo + mantenimiento
+• BENEFICIO
+• Menor esfuerzo de ejecución
+
++
+Mayor velocidad
++
+Repetibilidad
++
+Regresión más rápida
+
+ROI – Retorno Óptimo de Inversión
+• ROI = (Beneficio − Inversión) / Inversión
+• No necesitamos convertir todo a dinero.
+
+• En Testing nos preguntarnos:
+• ¿El valor que obtendremos justifica el costo de
+
+automatizar y mantener la prueba?
+
+Curva del ROI
+
+Cuándo SÍ y cuándo NO
+• Criterios para SÍ automatizar
+• Repetitiva (regresión, smoke).
+• Estable (no cambia cada sprint).
+• Crítica para el negocio.
+• Con datos variados (data-driven).
+• Ejecutable sin juicio humano.
+• De alto volumen.
+
+Cuándo SÍ y cuándo NO
+• Criterios para NO automatizar
+• Cambia mucho (UI en rediseño constante).
+• Exploratoria o de usabilidad.
+• De una sola ejecución.
+• Requiere juicio humano (estética, UX, accesibilidad
+
+subjetiva).
+• Costo de automatizar > beneficio esperado.
+• Pruebas de "una vez en la vida".
+
+Matriz de decisión
+Criterio
+
+Peso
+
+Pregunta
+
+Frecuencia de
+ejecución
+
+Alto
+
+¿Cuántas veces se ejecutará?
+
+Estabilidad
+
+Alto
+
+¿Cambia mucho?
+
+Criticidad
+
+Medio
+
+¿Si falla, duele?
+
+Complejidad técnica
+
+Medio
+
+¿Es viable automatizarlo?
+
+Costo de
+automatizar
+
+Alto
+
+¿Cuánto cuesta vs. beneficio?
+
+Sigamos pensando…
+• ¿Debemos automatizar TODAS las pruebas?
+
+• Si se puede automatizar, debemos automatizarlo
+
+• ¿Vale la pena automatizarlo?
+
+El tester que automatiza no es el que graba clics, es el que
+decide qué vale la pena automatizar.
+
+Conclusión
+• AUTOMATIZAR ≠ AUTOMATIZAR TODO
+
+• Una buena estrategia de automatización busca:
+
+• MAXIMIZAR EL VALOR
+
+•y
+
+• MINIMIZAR EL ESFUERZO Y MANTENIMIENTO
+
+Hands ON!
+• Formar grupos de 2 personas y con base en la matriz de
+
+decisión, analizar los siguientes casos de prueba.
+• En cada caso de prueba responder:
+• 1. ¿Se debe automatizar? SI/NO
+• 2. Justificación de la decisión anterior con al menos dos
+
+criterios de la matriz.
+• 3. ¿A qué nivel de la pirámide pertenece la prueba
+(unitario/API/UI)?
+• Tiempo: 50 minutos.
+
+10 casos de prueba.
+Login con usuario y contraseña válidos.
+2. Método que calcula impuestos.
+3. Cambio de color del botón "Comprar" (rediseño cada sprint).
+4. Prueba exploratoria de la nueva pantalla de «Mis materias»
+en la plataforma.
+5. Registro de 10.000 usuarios concurrentes.
+6. Validación de que el total del carrito suma bien.
+7. Prueba de usabilidad de una pantalla con 5 usuarios reales.
+8. Envío de email de confirmación de compra.
+9. Verificación de que el logo aparece en el header.
+10. Regresión completa antes de cada release.
+1.
+
+Tarea
+• Con base en la matriz de decisión, analizar 5 casos de
+
+prueba de su proyecto integrador.
+• En cada caso de prueba responder:
+• 1. ¿Se debe automatizar? SI/NO
+• 2. Justificación de la decisión anterior con al menos dos
+
+criterios de la matriz.
+• 3. ¿A qué nivel de la pirámide pertenece la prueba
+(unitario/API/UI)?
+
+

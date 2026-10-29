@@ -1,0 +1,6 @@
+Fiebre,Dolor,Tos,Diagnostico
+38.5,Si,Si,Gripe
+39.2,No,Si,COVID-19
+37,Si,No,Resfriado
+40,Si,Si,COVID-19
+39,No,No,Resfriado
